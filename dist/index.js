@@ -35961,11 +35961,6 @@ class GitHub {
 		commentMessage +=
 			"**To understand the WordPress project's expectations around crediting contributors, please [review the Contributor Attribution page in the Core Handbook](https://make.wordpress.org/core/handbook/best-practices/contributor-attribution-props/).**\n";
 
-		const comment = {
-			...commentInfo,
-			body: commentMessage,
-		};
-
 		for await ( const response of this.octokit.paginate.iterator(
 			this.octokit.rest.issues.listComments,
 			commentInfo
@@ -35988,13 +35983,12 @@ class GitHub {
 		}
 
 		if ( commentId ) {
-			core.info( `Updating previous comment #${ commentId }` );
+			core.info( `Deleting previous comment #${ commentId }` );
 
 			try {
-				await this.octokit.rest.issues.updateComment( {
+				await this.octokit.rest.issues.deleteComment( {
 					...context.repo,
 					comment_id: commentId,
-					body: comment.body,
 				} );
 			} catch ( e ) {
 				core.info( 'Error editing previous comment: ' + e.message );
@@ -36002,14 +35996,14 @@ class GitHub {
 			}
 		}
 
-		// No previous or edit comment failed.
-		if ( ! commentId ) {
-			core.info( 'No previous comment found. Creating a new one.' );
-			try {
-				await this.octokit.rest.issues.createComment( comment );
-			} catch ( e ) {
-				core.error( `Error creating comment: ${ e.message }` );
-			}
+		core.info( 'Creating a new comment.' );
+		try {
+			await this.octokit.rest.issues.createComment( {
+				...commentInfo,
+				body: commentMessage,
+			} );
+		} catch ( e ) {
+			core.error( `Error creating comment: ${ e.message }` );
 		}
 	}
 }
