@@ -247,6 +247,7 @@ function skipUser( username ) {
 		'github-actions',
 		'dependabot[bot]',
 		'github-advanced-security',
+		'codecov',
 	];
 
 	if (
