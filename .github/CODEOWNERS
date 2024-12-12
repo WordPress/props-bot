@@ -1,0 +1,8 @@
+#
+# All contributions to Props Bot are welcome. However, because Props Bot can be used in both public and private
+# repositories, it's important to ensure someone familiar with the potential security risks involved with GitHub Actions
+# reviews changes to this action repository.
+#
+# For now, this is limited to members of the Props Bot Core team, but can be expanded in the future.
+#
+@WordPress/props-bot-core
